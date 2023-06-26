@@ -82,6 +82,7 @@ const App = () => {
             ],
             { cancelable: false }
           );
+          console.log('Meesage', message);
           // Perform additional actions like ringing the phone, sending data to the backend, etc.
           vibratePhone();
           break; // Exit the loop if a phishing keyword is found
