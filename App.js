@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, PermissionsAndroid, Alert, Vibration, Sound, Linking } from 'react-native';
+import { View, Text, StyleSheet, PermissionsAndroid, Alert, Vibration, Sound, Linking, useColorScheme } from 'react-native';
 import SmsListener from 'react-native-android-sms-listener';
 // import Permissions from 'react-native-permissions';
 
 const App = () => {
+  
+  const colorScheme = useColorScheme();
+  const isDarkMode = colorScheme === 'dark';
 
   const [receivedMessage, setReceivedMessage] = useState('');
   const [phishingSMS, setPhishingSMS] = useState('');
@@ -250,19 +253,21 @@ const App = () => {
 
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Phishing Detector</Text>
+    <View style={[styles.container, { backgroundColor: isDarkMode ? '#000000' : '#F5F5F5' }]}>
+      <Text style={[styles.title, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>Phishing Detector</Text>
 
-      <View style={styles.rectangle}>
-        <Text style={styles.subtitle}>Message received:</Text>
-        <Text style={styles.message}>{receivedMessage ? receivedMessage : 'No message recieved yet.'}</Text>
+      <View style={[styles.rectangle, { backgroundColor: isDarkMode ? '#333333' : '#FFFFFF' }]}>
+        <Text style={[styles.subtitle, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>Message received:</Text>
+        <Text style={[styles.message, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
+          {receivedMessage ? receivedMessage : 'No message received yet.'}
+        </Text>
       </View>
 
       {phishingSMS !== '' && (
-        <View style={styles.rectangle}>
-          <Text style={styles.subtitle}>Phishing words detected:</Text>
+        <View style={[styles.rectangle, { backgroundColor: isDarkMode ? '#333333' : '#FFFFFF' }]}>
+          <Text style={[styles.subtitle, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>Phishing words detected:</Text>
           {phishingWords.map((word, index) => (
-            <Text key={index} style={styles.phishingWord}>
+            <Text key={index} style={[styles.phishingWord, { backgroundColor: isDarkMode ? '#555555' : '#FFD2D2' }]}>
               {word}
             </Text>
           ))}
@@ -278,7 +283,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#F5F5F5',
   },
   title: {
     fontSize: 24,
@@ -287,7 +291,6 @@ const styles = StyleSheet.create({
   },
   rectangle: {
     width: '100%',
-    backgroundColor: '#FFFFFF',
     marginBottom: 20,
     padding: 10,
     borderRadius: 10,
@@ -302,7 +305,6 @@ const styles = StyleSheet.create({
   },
   phishingWord: {
     fontSize: 14,
-    backgroundColor: '#FFD2D2',
     paddingHorizontal: 6,
     paddingVertical: 3,
     borderRadius: 6,
