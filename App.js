@@ -5,6 +5,11 @@ import SmsListener from 'react-native-android-sms-listener';
 
 const App = () => {
 
+  const [receivedMessage, setReceivedMessage] = useState('');
+  const [phishingSMS, setPhishingSMS] = useState('');
+  const [phishingWords, setPhishingWords] = useState([]);
+  const [alertDisplayed, setAlertDisplayed] = useState(false);
+
   const [user, setUser] = useState({
     name: 'Simon Peter',
     email: 'simon@example.com',
@@ -26,7 +31,6 @@ const App = () => {
         "password",
         "security",
         "suspicious",
-        "urgent",
         "confirm",
         "personal information",
         "bank",
@@ -82,11 +86,28 @@ const App = () => {
             ],
             { cancelable: false }
           );
+
+           // Perform additional actions like ringing the phone, sending data to the backend, etc.
+           vibratePhone();
+
           console.log('Meesage', message);
-          // Perform additional actions like ringing the phone, sending data to the backend, etc.
-          vibratePhone();
+          setReceivedMessage(message);
+         
           break; // Exit the loop if a phishing keyword is found
         }
+      }
+
+      const detectedPhishingWords = [];
+      for (const keyword of phishingKeywords) {
+        if (message.includes(keyword)) {
+          detectedPhishingWords.push(keyword);
+        }
+      }
+
+      if (detectedPhishingWords.length > 0 && !alertDisplayed) {
+        setPhishingSMS(message);
+        setPhishingWords(detectedPhishingWords);
+        setAlertDisplayed(true);
       }
 
       const link = extractLinkFromSMS(message);
@@ -206,9 +227,47 @@ const App = () => {
     requestPermissions();
   }, []);
 
+  const showAlert = () => {
+    Alert.alert(
+      'Warning',
+      'This SMS may contain a phishing attempt. Be cautious!',
+      [
+        {
+          text: 'OK',
+          onPress: () => console.log('User acknowledged the warning'),
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
+  useEffect(() => {
+    if (phishingSMS !== '' && !alertDisplayed) {
+      showAlert();
+      setAlertDisplayed(true);
+    }
+  }, [phishingSMS, alertDisplayed]);
+
+
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Phishing Detector</Text>
+      <Text style={styles.title}>Phishing Detector</Text>
+
+      <View style={styles.rectangle}>
+        <Text style={styles.subtitle}>Message received:</Text>
+        <Text style={styles.message}>{receivedMessage ? receivedMessage : 'No message recieved yet.'}</Text>
+      </View>
+
+      {phishingSMS !== '' && (
+        <View style={styles.rectangle}>
+          <Text style={styles.subtitle}>Phishing words detected:</Text>
+          {phishingWords.map((word, index) => (
+            <Text key={index} style={styles.phishingWord}>
+              {word}
+            </Text>
+          ))}
+        </View>
+      )}
     </View>
   );
 }
@@ -218,11 +277,36 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#F5F5F5',
   },
-  heading: {
+  title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
+  },
+  rectangle: {
+    width: '100%',
+    backgroundColor: '#FFFFFF',
+    marginBottom: 20,
+    padding: 10,
+    borderRadius: 10,
+  },
+  subtitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  message: {
+    fontSize: 16,
+  },
+  phishingWord: {
+    fontSize: 14,
+    backgroundColor: '#FFD2D2',
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    borderRadius: 6,
+    marginBottom: 4,
   },
 });
 
