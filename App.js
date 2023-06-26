@@ -70,7 +70,7 @@ const App = () => {
       for (const keyword of phishingKeywords) {
         if (message.includes(keyword)) {
           // Handle phishing detection
-          playRingtone();
+          // playRingtone();
           Alert.alert(
             'Warning',
             'This SMS may contain a phishing attempt. Be cautious!',
