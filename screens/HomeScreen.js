@@ -255,8 +255,8 @@ const HomeScreen = () => {
   return (
     <View style={[styles.container, { backgroundColor: isDarkMode ? '#000000' : '#F5F5F5' }]}>
       <View style={[styles.rectangle, { backgroundColor: isDarkMode ? '#333333' : '#FFFFFF' }]}>
-        <Text style={[styles.subtitle, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>Message:</Text>
-        <Text style={[styles.message, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
+        <Text style={[styles.subtitle, { color: isDarkMode ? '#FFFFFF' : '#282828' }]}>Message:</Text>
+        <Text style={[styles.message, { color: isDarkMode ? '#FFFFFF' : '#282828' }]}>
           {receivedMessage ? receivedMessage : 'No message received yet. Waiting for message...'}
         </Text>
       </View>
@@ -286,6 +286,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
+    color: '#282828'
   },
   rectangle: {
     width: '100%',
@@ -297,9 +298,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
+    color: '#282828'
   },
   message: {
     fontSize: 16,
+    color: '#282828'
   },
   phishingWord: {
     fontSize: 14,
@@ -307,6 +310,7 @@ const styles = StyleSheet.create({
     paddingVertical: 3,
     borderRadius: 6,
     marginBottom: 4,
+    color: '#282828'
   },
 });
 

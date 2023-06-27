@@ -4,7 +4,7 @@ import { View, Text, StyleSheet } from 'react-native';
 const AboutScreen = () => {
     return (
         <View style={styles.container}>
-            <Text style={styles.heading}>About</Text>
+            <Text style={styles.content}>This application warns you about spam and unwanted messages. It does this by analyzing the content of the message and using machine learning algorithms to detect patterns.</Text>
         </View>
     )
 }
@@ -12,14 +12,14 @@ const AboutScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
     },
-    heading: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 20,
+    content: {
+        padding: 8,
+        color: '#282828'
     },
+   
 });
 
 export default AboutScreen
