@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, PermissionsAndroid, Alert, Vibration, Sound, Linking, useColorScheme } from 'react-native';
 import SmsListener from 'react-native-android-sms-listener';
+import { checkMultiple, requestMultiple, PERMISSIONS } from 'react-native-permissions';
 // import Permissions from 'react-native-permissions';
 
 const HomeScreen = () => {
-  
+
   const colorScheme = useColorScheme();
   const isDarkMode = colorScheme === 'dark';
 
@@ -90,12 +91,12 @@ const HomeScreen = () => {
             { cancelable: false }
           );
 
-           // Perform additional actions like ringing the phone, sending data to the backend, etc.
-           vibratePhone();
+          // Perform additional actions like ringing the phone, sending data to the backend, etc.
+          vibratePhone();
 
           console.log('Meesage', message);
           setReceivedMessage(message);
-         
+
           break; // Exit the loop if a phishing keyword is found
         }
       }
@@ -176,23 +177,77 @@ const HomeScreen = () => {
 
     const requestPermissions = async () => {
       try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.READ_SMS
-        );
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          console.log('SMS permission granted');
-
+        const granted = await PermissionsAndroid.requestMultiple([
+          'android.permission.READ_SMS',
+          'android.permission.RECEIVE_SMS',
+          'android.permission.VIBRATE',
+        ]);
+    
+        if (
+          granted['android.permission.READ_SMS'] === PermissionsAndroid.RESULTS.GRANTED &&
+          granted['android.permission.RECEIVE_SMS'] === PermissionsAndroid.RESULTS.GRANTED &&
+          granted['android.permission.VIBRATE'] === PermissionsAndroid.RESULTS.GRANTED
+        ) {
+          console.log('All permissions granted!');
           SmsListener.addListener((message) => {
             const smsBody = message.body;
             checkForPhishingKeywords(smsBody);
           });
         } else {
-          console.log('SMS permission denied');
+          Alert.alert('Permissions denied!', 'You need to give permissions');
         }
       } catch (error) {
-        console.log('Permission request failed:', error);
+        console.error('Error occurred while requesting permissions:', error);
       }
     };
+    
+    
+    
+    //   const requestPermissions = async () => {
+
+    //     let perm = [ PERMISSIONS.IOS.READ_SMS, PERMISSIONS.IOS.RECEIVE_SMS, PERMISSIONS.IOS.VIBRATE ];
+    //     if (Platform.OS == 'android') {
+    //         perm = [ PERMISSIONS.ANDROID.READ_SMS, PERMISSIONS.ANDROID.RECEIVE_SMS, PERMISSIONS.ANDROID.VIBRATE ];
+    //     }
+    //     let permissionStatuses = await requestMultiple(perm);
+    //     console.log('obj', permissionStatuses);
+    //     console.log('READ_SMS', permissionStatuses[perm[0]]);
+    //     console.log('RECEIVE_SMS', permissionStatuses[[ perm[1] ]]);
+    //     console.log('VIBRATE', permissionStatuses[[ perm[2] ]]);
+    //     const result = permissionStatuses[perm[0]];
+    //     if (result !== 'granted') {
+    //         Alert.alert('Insufficient permissions!', 'You need to grant all the required permissions to use this app.', [
+    //             { text: 'Okay' }
+    //         ]);
+    //         return false;
+    //     }
+    //     console.log('Permissions granted');
+
+    //     SmsListener.addListener((message) => {
+    //       const smsBody = message.body;
+    //       checkForPhishingKeywords(smsBody);
+    //     });
+    // };
+
+    // const requestPermissions = async () => {
+    //   try {
+    //     const granted = await PermissionsAndroid.request(
+    //       PermissionsAndroid.PERMISSIONS.READ_SMS
+    //     );
+    //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+    //       console.log('SMS permission granted');
+
+    //       SmsListener.addListener((message) => {
+    //         const smsBody = message.body;
+    //         checkForPhishingKeywords(smsBody);
+    //       });
+    //     } else {
+    //       console.log('SMS permission denied');
+    //     }
+    //   } catch (error) {
+    //     console.log('Permission request failed:', error);
+    //   }
+    // };
 
     // const requestPermissions = async () => {
     //   try {
