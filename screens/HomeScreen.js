@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, PermissionsAndroid, Alert, Vibration, Sound, Linking, useColorScheme } from 'react-native';
 import SmsListener from 'react-native-android-sms-listener';
-import { checkMultiple, requestMultiple, PERMISSIONS } from 'react-native-permissions';
+// import { checkMultiple, requestMultiple, PERMISSIONS } from 'react-native-permissions';
 // import Permissions from 'react-native-permissions';
 
 const HomeScreen = () => {
