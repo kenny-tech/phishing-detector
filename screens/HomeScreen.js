@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, PermissionsAndroid, Alert, Vibration, Sound, Linking, useColorScheme } from 'react-native';
 import SmsListener from 'react-native-android-sms-listener';
-// import { checkMultiple, requestMultiple, PERMISSIONS } from 'react-native-permissions';
-// import Permissions from 'react-native-permissions';
 
 const HomeScreen = () => {
 
@@ -200,34 +198,6 @@ const HomeScreen = () => {
         console.error('Error occurred while requesting permissions:', error);
       }
     };
-    
-    
-    
-    //   const requestPermissions = async () => {
-
-    //     let perm = [ PERMISSIONS.IOS.READ_SMS, PERMISSIONS.IOS.RECEIVE_SMS, PERMISSIONS.IOS.VIBRATE ];
-    //     if (Platform.OS == 'android') {
-    //         perm = [ PERMISSIONS.ANDROID.READ_SMS, PERMISSIONS.ANDROID.RECEIVE_SMS, PERMISSIONS.ANDROID.VIBRATE ];
-    //     }
-    //     let permissionStatuses = await requestMultiple(perm);
-    //     console.log('obj', permissionStatuses);
-    //     console.log('READ_SMS', permissionStatuses[perm[0]]);
-    //     console.log('RECEIVE_SMS', permissionStatuses[[ perm[1] ]]);
-    //     console.log('VIBRATE', permissionStatuses[[ perm[2] ]]);
-    //     const result = permissionStatuses[perm[0]];
-    //     if (result !== 'granted') {
-    //         Alert.alert('Insufficient permissions!', 'You need to grant all the required permissions to use this app.', [
-    //             { text: 'Okay' }
-    //         ]);
-    //         return false;
-    //     }
-    //     console.log('Permissions granted');
-
-    //     SmsListener.addListener((message) => {
-    //       const smsBody = message.body;
-    //       checkForPhishingKeywords(smsBody);
-    //     });
-    // };
 
     // const requestPermissions = async () => {
     //   try {
@@ -243,35 +213,6 @@ const HomeScreen = () => {
     //       });
     //     } else {
     //       console.log('SMS permission denied');
-    //     }
-    //   } catch (error) {
-    //     console.log('Permission request failed:', error);
-    //   }
-    // };
-
-    // const requestPermissions = async () => {
-    //   try {
-    //     const permissions = [
-    //       Permissions.PERMISSIONS.READ_SMS,
-    //       Permissions.PERMISSIONS.RECEIVE_SMS,
-    //       Permissions.PERMISSIONS.VIBRATE,
-    //     ];
-
-    //     const granted = await Permissions.requestMultiple(permissions);
-
-    //     if (
-    //       granted[Permissions.PERMISSIONS.READ_SMS] === Permissions.RESULTS.GRANTED &&
-    //       granted[Permissions.PERMISSIONS.RECEIVE_SMS] === Permissions.RESULTS.GRANTED &&
-    //       granted[Permissions.PERMISSIONS.VIBRATE] === Permissions.RESULTS.GRANTED
-    //     ) {
-    //       console.log('SMS, Receive SMS, and Vibration permissions granted');
-
-    //       SmsListener.addListener((message) => {
-    //         const smsBody = message.body;
-    //         checkForPhishingKeywords(smsBody);
-    //       });
-    //     } else {
-    //       console.log('SMS, Receive SMS, or Vibration permissions denied');
     //     }
     //   } catch (error) {
     //     console.log('Permission request failed:', error);
