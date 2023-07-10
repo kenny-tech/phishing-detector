@@ -17,7 +17,7 @@ const Signup = ({ navigation }) => {
             <Space/>
             <TextBox placeholderText={"Password"} />
            <Label labelTextColor="#FFFFFF" labelText="Forgot password?" labelSize={14} />
-            <View style={{width: 300, height: 50, borderRadius: 10, backgroundColor: '#0037BA', alignItems: 'center', marginHorizontal: 50}}>
+            <View style={{width: 300, height: 50, borderRadius: 10, backgroundColor: '#6693F5', alignItems: 'center', marginHorizontal: 50}}>
                 <Text style={{color: '#fff', fontSize: 24, paddingTop: 5}}>Sign Up</Text>
             </View>
             <View style={{marginTop: 20}}></View>

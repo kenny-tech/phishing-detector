@@ -37,6 +37,7 @@ function BottomTab() {
           },
           tabBarActiveTintColor: '#6693F5',
           tabBarInactiveTintColor: 'gray',
+          headerShown: true, 
         }} />
       <Tab.Screen
         name="About"
@@ -94,13 +95,13 @@ function App() {
             name="Signin" 
             component={SigninScreen} 
             options={{ 
-              headerShown: false, 
+              headerShown: true, 
             }}/>
         <Stack.Screen 
           name="Signup" 
           component={SignupScreen}
           options={{ 
-            headerShown: false, 
+            headerShown: true, 
           }}
         />
       </Stack.Navigator>

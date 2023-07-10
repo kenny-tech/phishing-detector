@@ -44,7 +44,7 @@ export default StyleSheet.create({
     },
     getStarted: {
         alignItems: 'center',
-        backgroundColor: '#0037BA',
+        backgroundColor: '#6693F5',
         color: '#fff',
         padding: 10,
         marginTop: 15,
