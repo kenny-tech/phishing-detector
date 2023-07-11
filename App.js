@@ -96,12 +96,14 @@ function App() {
             component={SigninScreen} 
             options={{ 
               headerShown: true, 
+              headerTitle: ""
             }}/>
         <Stack.Screen 
           name="Signup" 
           component={SignupScreen}
           options={{ 
             headerShown: true, 
+            headerTitle: ""
           }}
         />
       </Stack.Navigator>

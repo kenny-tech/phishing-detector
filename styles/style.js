@@ -44,7 +44,7 @@ export default StyleSheet.create({
     },
     getStarted: {
         alignItems: 'center',
-        backgroundColor: '#6693F5',
+        backgroundColor: '#00a0dd',
         color: '#fff',
         padding: 10,
         marginTop: 15,
@@ -124,6 +124,20 @@ export default StyleSheet.create({
     },
     input1: {
         height: 40,
+        width: 300,
+        borderWidth: 1,
+        borderBottomColor: '#fff',
+        borderTopWidth: 0,
+        borderLeftWidth: 0,
+        borderRightWidth: 0,
+        marginLeft: 54,
+        marginBottom: 10,
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        paddingLeft: 10
+    },
+    select: {
+        height: 30,
         width: 300,
         borderWidth: 1,
         borderBottomColor: '#fff',
