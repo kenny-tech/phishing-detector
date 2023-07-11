@@ -22,7 +22,7 @@ function BottomTab() {
         options={{
           title: 'Scam Detector',
           headerStyle: {
-            backgroundColor: '#6693F5',
+            backgroundColor: '#00a0dd',
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
@@ -35,7 +35,7 @@ function BottomTab() {
               : 'ios-home-outline';
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: '#6693F5',
+          tabBarActiveTintColor: '#00a0dd',
           tabBarInactiveTintColor: 'gray',
           headerShown: true, 
         }} />
@@ -45,7 +45,7 @@ function BottomTab() {
         options={{
           title: 'About',
           headerStyle: {
-            backgroundColor: '#6693F5',
+            backgroundColor: '#00a0dd',
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
@@ -58,7 +58,7 @@ function BottomTab() {
               : 'ios-information-circle-outline';
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: '#6693F5',
+          tabBarActiveTintColor: '#00a0dd',
           tabBarInactiveTintColor: 'gray',
         }} />
     </Tab.Navigator>

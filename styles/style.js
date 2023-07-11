@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     titleText: {
         fontWeight: 'bold',
-        marginTop: 70, 
+        marginTop: 30, 
         marginLeft: 54,
         marginRight: 54
     },
@@ -123,7 +123,7 @@ export default StyleSheet.create({
         width: 300
     },
     input1: {
-        height: 40,
+        height: 50,
         width: 300,
         borderWidth: 1,
         borderBottomColor: '#fff',
@@ -137,7 +137,7 @@ export default StyleSheet.create({
         paddingLeft: 10
     },
     select: {
-        height: 30,
+        height: 50,
         width: 300,
         borderWidth: 1,
         borderBottomColor: '#fff',

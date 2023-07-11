@@ -3,7 +3,7 @@ import { View, TextInput } from 'react-native';
 
 import styles from '../styles/style';
 
-const TextBox = ({ placeholderText }) => {
+const TextBox = ({ placeholderText, onChangeText }) => {
     return (
         <View
             style={{
@@ -15,6 +15,7 @@ const TextBox = ({ placeholderText }) => {
             <TextInput
                 style={styles.input1}
                 placeholder={placeholderText}
+                onChange={onChangeText}
             />
         </View>
     )

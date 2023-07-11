@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {View} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 
 import styles from '../styles/style';
 
-const SelectBox = () => {
-
-  const [selectedLanguage, setSelectedLanguage] = useState();
+const SelectBox = ({ options, placeholder }) => {
 
   return (
     <View
@@ -15,10 +13,18 @@ const SelectBox = () => {
         alignItems: 'center',
         height: 40,
       }}>
-      <Picker style={styles.select}>
-        <Picker.Item label="Java" value="java" />
-        <Picker.Item label="JavaScript" value="js" />
-      </Picker>
+      <View style={styles.select}>
+        <Picker>
+          <Picker.Item label={placeholder} value={''} />
+          {
+            options && options.map(option => {
+              return (
+                <Picker.Item label={option.name} value={option.name} key={option.id}/>
+              )
+            })
+          }
+        </Picker>
+      </View>
     </View>
   );
 };
