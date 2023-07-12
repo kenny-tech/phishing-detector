@@ -84,6 +84,9 @@ const Signup = ({navigation}) => {
     ) {
       setLoading(false);
       Alert.alert('Please enter required fields');
+    } else if (emailValidator.test(email) === false) {
+      setLoading(false);
+      Alert.alert('Please enter a valid email address');
     } else {
       setLoading(true);
       let data = {
