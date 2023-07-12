@@ -3,7 +3,7 @@ import { View, TextInput } from 'react-native';
 
 import styles from '../styles/style';
 
-const TextBox = ({ placeholderText, onChangeText, type }) => {
+const TextBox = ({ placeholderText, onChangeText, type, defaultValue }) => {
     return (
         <View
             style={{
@@ -15,8 +15,9 @@ const TextBox = ({ placeholderText, onChangeText, type }) => {
             <TextInput
                 style={styles.input1}
                 placeholder={placeholderText}
-                onChange={onChangeText}
+                onChangeText={onChangeText}
                 secureTextEntry={type==='password' ? true : false}
+                defaultValue={defaultValue}
             />
         </View>
     )

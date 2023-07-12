@@ -4,7 +4,7 @@ import {Picker} from '@react-native-picker/picker';
 
 import styles from '../styles/style';
 
-const SelectBox = ({ options, placeholder, selectedValue, onValueChange }) => {
+const SelectBox = ({ options, placeholder, selectedValue, onValueChange, defaultValue }) => {
 
   return (
     <View
@@ -18,7 +18,7 @@ const SelectBox = ({ options, placeholder, selectedValue, onValueChange }) => {
           selectedValue={selectedValue}
           onValueChange={onValueChange}
         >
-          <Picker.Item label={placeholder} value={''} />
+          <Picker.Item label={placeholder} value={defaultValue} />
           {
             options && options.map(option => {
               return (

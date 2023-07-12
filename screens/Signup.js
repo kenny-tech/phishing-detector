@@ -67,9 +67,35 @@ const Signup = ({navigation}) => {
   const [userGender, setUserGender] = useState('');
   const [education, setEducation] = useState('');
   const [age, setAge] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSignup = () => {
-    Alert.alert('Sign up...');
+  const handleSignup = e => {
+    e.preventDefault();
+    setLoading(false);
+    let emailValidator = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+
+    if (
+      name.length === 0 ||
+      email.length === 0 ||
+      password.length === 0 ||
+      userGender.length === 0 ||
+      education.length === 0 ||
+      age.length === 0
+    ) {
+      setLoading(false);
+      Alert.alert('Please enter required fields');
+    } else {
+      setLoading(true);
+      let data = {
+        name,
+        email,
+        password,
+        gender: userGender,
+        education,
+        age,
+      };
+      console.log(data);
+    }
   };
 
   return (
@@ -84,18 +110,21 @@ const Signup = ({navigation}) => {
             placeholderText={'Name'}
             onChangeText={name => setName(name)}
             type={'text'}
+            defaultValue={name}
           />
           <Space />
           <TextBox
             placeholderText={'Email'}
             onChangeText={email => setEmail(email)}
             type={'email'}
+            defaultValue={email}
           />
           <Space />
           <TextBox
             placeholderText={'Password'}
             onChangeText={password => setPassword(password)}
             type={'password'}
+            defaultValue={password}
           />
           <Space />
           <SelectBox
@@ -103,6 +132,7 @@ const Signup = ({navigation}) => {
             placeholder="Select Gender"
             selectedValue={userGender}
             onValueChange={value => setUserGender(value)}
+            defaultValue={userGender}
           />
           <Space />
           <SelectBox
@@ -110,6 +140,7 @@ const Signup = ({navigation}) => {
             placeholder="Select Education Level"
             selectedValue={education}
             onValueChange={value => setEducation(value)}
+            defaultValue={education}
           />
           <Space />
           <SelectBox
@@ -117,6 +148,7 @@ const Signup = ({navigation}) => {
             placeholder="Select Age Range"
             selectedValue={age}
             onValueChange={value => setAge(value)}
+            defaultValue={age}
           />
           <Label
             labelTextColor="#FFFFFF"
