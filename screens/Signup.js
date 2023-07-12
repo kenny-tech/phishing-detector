@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
   KeyboardAvoidingView,
+  Alert,
 } from 'react-native';
 
 import TitleText from '../components/TitleText';
@@ -67,6 +68,10 @@ const Signup = ({navigation}) => {
   const [education, setEducation] = useState('');
   const [age, setAge] = useState('');
 
+  const handleSignup = () => {
+    Alert.alert('Sign up...');
+  };
+
   return (
     <ScrollView keyboardShouldPersistTaps="handled">
       <View style={{flex: 1, alignItems: 'flex-start'}}>
@@ -78,16 +83,19 @@ const Signup = ({navigation}) => {
           <TextBox
             placeholderText={'Name'}
             onChangeText={name => setName(name)}
+            type={'text'}
           />
           <Space />
           <TextBox
             placeholderText={'Email'}
             onChangeText={email => setEmail(email)}
+            type={'email'}
           />
           <Space />
           <TextBox
             placeholderText={'Password'}
             onChangeText={password => setPassword(password)}
+            type={'password'}
           />
           <Space />
           <SelectBox
@@ -115,19 +123,21 @@ const Signup = ({navigation}) => {
             labelText="Forgot password?"
             labelSize={14}
           />
-          <View
-            style={{
-              width: 300,
-              height: 50,
-              borderRadius: 10,
-              backgroundColor: '#00a0dd',
-              alignItems: 'center',
-              marginHorizontal: 50,
-            }}>
-            <Text style={{color: '#fff', fontSize: 24, paddingTop: 5}}>
-              Sign Up
-            </Text>
-          </View>
+          <TouchableOpacity onPress={e => handleSignup(e)}>
+            <View
+              style={{
+                width: 300,
+                height: 50,
+                borderRadius: 10,
+                backgroundColor: '#00a0dd',
+                alignItems: 'center',
+                marginHorizontal: 50,
+              }}>
+              <Text style={{color: '#fff', fontSize: 24, paddingTop: 5}}>
+                Sign Up
+              </Text>
+            </View>
+          </TouchableOpacity>
           <View style={{marginTop: 20}}></View>
           <View style={{alignSelf: 'center'}}>
             <TouchableOpacity onPress={() => navigation.navigate('Signin')}>
