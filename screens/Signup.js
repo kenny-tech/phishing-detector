@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, ScrollView, KeyboardAvoidingView} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  KeyboardAvoidingView,
+} from 'react-native';
 
 import TitleText from '../components/TitleText';
 import Label from '../components/Label';
@@ -69,17 +75,41 @@ const Signup = ({navigation}) => {
           style={{flex: 1, justifyContent: 'space-between'}}>
           <TitleText textSize={35} textColor="#000" text="Sign Up" />
           <View style={{marginLeft: 54, marginRight: 54, marginTop: 30}}></View>
-          <TextBox placeholderText={'Name'} onChangeText={name => setName(name)}/>
+          <TextBox
+            placeholderText={'Name'}
+            onChangeText={name => setName(name)}
+          />
           <Space />
-          <TextBox placeholderText={'Email'} onChangeText={email => setEmail(email)}/>
+          <TextBox
+            placeholderText={'Email'}
+            onChangeText={email => setEmail(email)}
+          />
           <Space />
-          <TextBox placeholderText={'Password'} onChangeText={password => setPassword(password)}/>
+          <TextBox
+            placeholderText={'Password'}
+            onChangeText={password => setPassword(password)}
+          />
           <Space />
-          <SelectBox options={gender} placeholder="Select Gender" onValueChange={(gender) => setGender(gender)} />
+          <SelectBox
+            options={gender}
+            placeholder="Select Gender"
+            selectedValue={userGender}
+            onValueChange={value => setUserGender(value)}
+          />
           <Space />
-          <SelectBox options={educationLevel} placeholder="Select Education Level" />
+          <SelectBox
+            options={educationLevel}
+            placeholder="Select Education Level"
+            selectedValue={education}
+            onValueChange={value => setEducation(value)}
+          />
           <Space />
-          <SelectBox options={ageRange} placeholder="Select Age Range" />
+          <SelectBox
+            options={ageRange}
+            placeholder="Select Age Range"
+            selectedValue={age}
+            onValueChange={value => setAge(value)}
+          />
           <Label
             labelTextColor="#FFFFFF"
             labelText="Forgot password?"
