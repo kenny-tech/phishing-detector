@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, PermissionsAndroid, Alert, Vibration, Sound, Linking, useColorScheme } from 'react-native';
 import SmsListener from 'react-native-android-sms-listener';
+import notifee from '@notifee/react-native';
 
 const HomeScreen = () => {
 
@@ -17,6 +18,31 @@ const HomeScreen = () => {
     email: 'simon@example.com',
     phone: '123-456-7890',
   });
+
+  async function onDisplayNotification() {
+    // Request permissions (required for iOS)
+    await notifee.requestPermission()
+
+    // Create a channel (required for Android)
+    const channelId = await notifee.createChannel({
+      id: 'default',
+      name: 'Default Channel',
+    });
+
+    // Display a notification
+    await notifee.displayNotification({
+      title: 'Warning',
+      body: 'This SMS may contain a phishing attempt. Be cautious!',
+      android: {
+        channelId,
+        // smallIcon: 'name-of-a-small-icon', // optional, defaults to 'ic_launcher'.
+        // pressAction is needed if you want the notification to open the app when pressed
+        pressAction: {
+          id: 'default',
+        },
+      },
+    });
+  }
 
   useEffect(() => {
 
@@ -91,10 +117,9 @@ const HomeScreen = () => {
 
           // Perform additional actions like ringing the phone, sending data to the backend, etc.
           vibratePhone();
-
           console.log('Meesage', message);
           setReceivedMessage(message);
-
+          onDisplayNotification();
           break; // Exit the loop if a phishing keyword is found
         }
       }
@@ -238,6 +263,8 @@ const HomeScreen = () => {
       ],
       { cancelable: false }
     );
+    onDisplayNotification();
+
   };
 
   useEffect(() => {
