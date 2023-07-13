@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, PermissionsAndroid, Alert, Vibration, Sound, Linking, useColorScheme } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  PermissionsAndroid,
+  Alert,
+  Vibration,
+  useColorScheme,
+  Platform,
+  AppState,
+} from 'react-native';
 import SmsListener from 'react-native-android-sms-listener';
-import notifee from '@notifee/react-native';
+import PushNotification from 'react-native-push-notification';
 
 const HomeScreen = () => {
-
   const colorScheme = useColorScheme();
   const isDarkMode = colorScheme === 'dark';
 
@@ -13,191 +22,7 @@ const HomeScreen = () => {
   const [phishingWords, setPhishingWords] = useState([]);
   const [alertDisplayed, setAlertDisplayed] = useState(false);
 
-  const [user, setUser] = useState({
-    name: 'Simon Peter',
-    email: 'simon@example.com',
-    phone: '123-456-7890',
-  });
-
-  async function onDisplayNotification() {
-    // Request permissions (required for iOS)
-    await notifee.requestPermission()
-
-    // Create a channel (required for Android)
-    const channelId = await notifee.createChannel({
-      id: 'default',
-      name: 'Default Channel',
-    });
-
-    // Display a notification
-    await notifee.displayNotification({
-      title: 'Warning',
-      body: 'This SMS may contain a phishing attempt. Be cautious!',
-      android: {
-        channelId,
-        // smallIcon: 'name-of-a-small-icon', // optional, defaults to 'ic_launcher'.
-        // pressAction is needed if you want the notification to open the app when pressed
-        pressAction: {
-          id: 'default',
-        },
-      },
-    });
-  }
-
   useEffect(() => {
-
-    const soundPath = 'notification_sound.mp3';
-    let sound = null;
-
-    const checkForPhishingKeywords = (message) => {
-
-      const phishingKeywords = [
-        "account",
-        "update",
-        "verify",
-        "login",
-        "password",
-        "security",
-        "suspicious",
-        "confirm",
-        "personal information",
-        "bank",
-        "credit card",
-        "social security number",
-        "online banking",
-        "limited time offer",
-        "win",
-        "prize",
-        "lottery",
-        "free",
-        "temporary",
-        "expire",
-        "suspend",
-        "unauthorized",
-        "reset",
-        "banned",
-        "immediately",
-        "urgent",
-        "important",
-        "discount",
-        "upgrade",
-        "renew",
-        "bonus",
-        "account activity",
-        "account suspension",
-        "update your information",
-        "click here",
-        "open this",
-        "verify your account",
-        "change password",
-        "unusual activity",
-        "confirm your identity",
-        "call this number",
-        "click this link",
-        "You have won",
-        "banking information",
-        "security breach",
-      ]
-
-      for (const keyword of phishingKeywords) {
-        if (message.includes(keyword)) {
-          // Handle phishing detection
-          // playRingtone();
-          Alert.alert(
-            'Warning',
-            'This SMS may contain a phishing attempt. Be cautious!',
-            [
-              {
-                text: 'OK',
-                onPress: () => console.log('User acknowledged the warning'),
-              },
-            ],
-            { cancelable: false }
-          );
-
-          // Perform additional actions like ringing the phone, sending data to the backend, etc.
-          vibratePhone();
-          console.log('Meesage', message);
-          setReceivedMessage(message);
-          onDisplayNotification();
-          break; // Exit the loop if a phishing keyword is found
-        }
-      }
-
-      const detectedPhishingWords = [];
-      for (const keyword of phishingKeywords) {
-        if (message.includes(keyword)) {
-          detectedPhishingWords.push(keyword);
-        }
-      }
-
-      if (detectedPhishingWords.length > 0 && !alertDisplayed) {
-        setPhishingSMS(message);
-        setPhishingWords(detectedPhishingWords);
-        setAlertDisplayed(true);
-      }
-
-      const link = extractLinkFromSMS(message);
-      if (link) {
-        handleLinkClick(link);
-      }
-    };
-
-    const extractLinkFromSMS = (message) => {
-      const regex = /(https?:\/\/[^\s]+)/g;
-      const matches = message.match(regex);
-      return matches ? matches[0] : null;
-    };
-
-    const handleLinkClick = (link) => {
-      Alert.alert(
-        'Phishing Link Clicked',
-        `The user clicked the following link: ${link}`,
-        [
-          {
-            text: 'OK',
-            onPress: () => {
-              sendUserData(`This user ${user.name} clicked the phishing link`);
-              Linking.openURL(link);
-            },
-          },
-        ],
-        { cancelable: false }
-      );
-    };
-
-    const sendUserData = (message) => {
-      const userData = {
-        name: user.name,
-        email: user.email,
-        phone: user.phone,
-        message,
-      };
-
-      console.log(userData);
-
-      // axios
-      //   .post('YOUR_BACKEND_URL', userData)
-      //   .then((response) => {
-      //     console.log('Data sent to backend:', response.data);
-      //   })
-      //   .catch((error) => {
-      //     console.log('Error sending data to backend:', error);
-      //   });
-    };
-
-    const playRingtone = () => {
-      const soundObject = new Sound(soundPath, (error) => {
-        if (error) {
-          console.log('Error loading sound:', error);
-        } else {
-          soundObject.play(() => {
-            soundObject.release();
-          });
-        }
-      });
-    };
-
     const requestPermissions = async () => {
       try {
         const granted = await PermissionsAndroid.requestMultiple([
@@ -205,17 +30,14 @@ const HomeScreen = () => {
           'android.permission.RECEIVE_SMS',
           'android.permission.VIBRATE',
         ]);
-    
+
         if (
           granted['android.permission.READ_SMS'] === PermissionsAndroid.RESULTS.GRANTED &&
           granted['android.permission.RECEIVE_SMS'] === PermissionsAndroid.RESULTS.GRANTED &&
           granted['android.permission.VIBRATE'] === PermissionsAndroid.RESULTS.GRANTED
         ) {
           console.log('All permissions granted!');
-          SmsListener.addListener((message) => {
-            const smsBody = message.body;
-            checkForPhishingKeywords(smsBody);
-          });
+          startSmsListener();
         } else {
           Alert.alert('Permissions denied!', 'You need to give permissions');
         }
@@ -224,31 +46,97 @@ const HomeScreen = () => {
       }
     };
 
-    // const requestPermissions = async () => {
-    //   try {
-    //     const granted = await PermissionsAndroid.request(
-    //       PermissionsAndroid.PERMISSIONS.READ_SMS
-    //     );
-    //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-    //       console.log('SMS permission granted');
-
-    //       SmsListener.addListener((message) => {
-    //         const smsBody = message.body;
-    //         checkForPhishingKeywords(smsBody);
-    //       });
-    //     } else {
-    //       console.log('SMS permission denied');
-    //     }
-    //   } catch (error) {
-    //     console.log('Permission request failed:', error);
-    //   }
-    // };
-
-    const vibratePhone = () => {
-      Vibration.vibrate([200, 500, 200, 500], true); // Vibrate pattern: [wait, vibrate, wait, vibrate]
+    const startSmsListener = () => {
+      SmsListener.addListener(message => {
+        const smsBody = message.body;
+        checkForPhishingKeywords(smsBody);
+      });
     };
 
+    const checkForPhishingKeywords = smsBody => {
+      // Define your phishing word list
+      const phishingWordsList = ['phishing', 'scam', 'fraud'];
+
+      // Check if any phishing word is present in the SMS body
+      const foundPhishingWords = phishingWordsList.filter(word =>
+        smsBody.toLowerCase().includes(word.toLowerCase())
+      );
+
+      if (foundPhishingWords.length > 0) {
+        setPhishingSMS(smsBody);
+        setPhishingWords(foundPhishingWords);
+        setAlertDisplayed(true);
+        Vibration.vibrate();
+        // Display a push notification for the alert
+        PushNotification.localNotification({
+          channelId: 'phishing-alert-channel',
+          title: 'Phishing SMS Detected',
+          message: 'Be cautious of this SMS!',
+          userInfo: { message: smsBody }, // Pass additional data with the notification
+        });
+      }
+    };
+
+    // Request permissions and start SMS listener
     requestPermissions();
+
+    // Clean up the SMS listener when the component unmounts
+    return () => {
+      SmsListener.removeListener();
+    };
+  }, []);
+
+  useEffect(() => {
+    const createNotificationChannel = () => {
+      // Create a notification channel for Android 8.0 (Oreo) and above
+      if (Platform.OS === 'android' && Platform.Version >= 26) {
+        const channelConfig = {
+          channelId: 'phishing-alert-channel',
+          channelName: 'Phishing Alert Channel',
+          channelDescription: 'Channel for phishing SMS alerts',
+          importance: PushNotification.Importance.High,
+          vibration: true,
+        };
+
+        PushNotification.createChannel(channelConfig, created =>
+          console.log(`Notification channel created: ${created}`)
+        );
+      }
+    };
+
+    // Create the notification channel
+    createNotificationChannel();
+
+    // Configure PushNotification
+    PushNotification.configure({
+      onNotification: notification => {
+        console.log('Push Notification:', notification);
+      },
+      onBackgroundNotification: notification => {
+        console.log('Background Push Notification:', notification);
+      },
+      permissions: {
+        alert: true,
+        badge: true,
+        sound: true,
+      },
+      popInitialNotification: true,
+      requestPermissions: Platform.OS === 'ios',
+    });
+
+    // Handle app state changes to properly handle notifications in the background
+    const handleAppStateChange = nextAppState => {
+      if (nextAppState === 'background') {
+        PushNotification.setApplicationIconBadgeNumber(0);
+      }
+    };
+
+    AppState.addEventListener('change', handleAppStateChange);
+
+    return () => {
+      // Clean up the app state change listener
+      AppState.removeEventListener('change', handleAppStateChange);
+    };
   }, []);
 
   const showAlert = () => {
@@ -263,8 +151,6 @@ const HomeScreen = () => {
       ],
       { cancelable: false }
     );
-    onDisplayNotification();
-
   };
 
   useEffect(() => {
@@ -273,7 +159,6 @@ const HomeScreen = () => {
       setAlertDisplayed(true);
     }
   }, [phishingSMS, alertDisplayed]);
-
 
   return (
     <View style={[styles.container, { backgroundColor: isDarkMode ? '#000000' : '#F5F5F5' }]}>
@@ -296,36 +181,27 @@ const HomeScreen = () => {
       )}
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    padding: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    color: '#282828'
   },
   rectangle: {
     width: '100%',
-    marginBottom: 20,
     padding: 10,
+    marginBottom: 20,
     borderRadius: 10,
   },
   subtitle: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
-    color: '#282828'
   },
   message: {
     fontSize: 16,
-    color: '#282828'
   },
   phishingWord: {
     fontSize: 14,
@@ -333,7 +209,6 @@ const styles = StyleSheet.create({
     paddingVertical: 3,
     borderRadius: 6,
     marginBottom: 4,
-    color: '#282828'
   },
 });
 
