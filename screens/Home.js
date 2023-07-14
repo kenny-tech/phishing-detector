@@ -116,7 +116,7 @@ const HomeScreen = () => {
         setPhishingSMS(smsBody);
         setPhishingWords(foundPhishingWords);
         setAlertDisplayed(true);
-        Vibration.vibrate();
+        // Vibration.vibrate();
         // Display a push notification for the alert
         PushNotification.localNotification({
           channelId: 'phishing-alert-channel',
@@ -189,7 +189,8 @@ const HomeScreen = () => {
     };
   }, []);
 
-  const showAlert = () => {
+  const showAlertAndVibratePhone = () => {
+    vibratePhone();
     Alert.alert(
       'Warning',
       'This SMS may contain a phishing attempt. Be cautious!',
@@ -203,9 +204,14 @@ const HomeScreen = () => {
     );
   };
 
+  const vibratePhone = () => {
+    Vibration.vibrate([200, 500, 200, 500], true); // Vibrate pattern: [wait, vibrate, wait, vibrate]
+  };
+
+
   useEffect(() => {
     if (phishingSMS !== '' && !alertDisplayed) {
-      showAlert();
+      showAlertAndVibratePhone();
       setAlertDisplayed(true);
     }
   }, [phishingSMS, alertDisplayed]);

@@ -20,7 +20,7 @@ function BottomTab() {
       <Tab.Screen
         name="Home" component={HomeScreen}
         options={{
-          title: 'Scam Detector',
+          title: 'Home',
           headerStyle: {
             backgroundColor: '#00a0dd',
           },
