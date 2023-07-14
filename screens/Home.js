@@ -116,6 +116,7 @@ const HomeScreen = () => {
         setPhishingSMS(smsBody);
         setPhishingWords(foundPhishingWords);
         setAlertDisplayed(true);
+        vibratePhone();
         // Vibration.vibrate();
         // Display a push notification for the alert
         PushNotification.localNotification({
