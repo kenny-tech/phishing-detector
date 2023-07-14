@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -32,9 +32,12 @@ const HomeScreen = () => {
         ]);
 
         if (
-          granted['android.permission.READ_SMS'] === PermissionsAndroid.RESULTS.GRANTED &&
-          granted['android.permission.RECEIVE_SMS'] === PermissionsAndroid.RESULTS.GRANTED &&
-          granted['android.permission.VIBRATE'] === PermissionsAndroid.RESULTS.GRANTED
+          granted['android.permission.READ_SMS'] ===
+            PermissionsAndroid.RESULTS.GRANTED &&
+          granted['android.permission.RECEIVE_SMS'] ===
+            PermissionsAndroid.RESULTS.GRANTED &&
+          granted['android.permission.VIBRATE'] ===
+            PermissionsAndroid.RESULTS.GRANTED
         ) {
           console.log('All permissions granted!');
           startSmsListener();
@@ -49,17 +52,64 @@ const HomeScreen = () => {
     const startSmsListener = () => {
       SmsListener.addListener(message => {
         const smsBody = message.body;
+        setReceivedMessage(smsBody);
         checkForPhishingKeywords(smsBody);
       });
     };
 
     const checkForPhishingKeywords = smsBody => {
       // Define your phishing word list
-      const phishingWordsList = ['phishing', 'scam', 'fraud'];
+      const phishingWordsList = [
+        'account',
+        'update',
+        'verify',
+        'login',
+        'password',
+        'security',
+        'suspicious',
+        'confirm',
+        'personal information',
+        'bank',
+        'credit card',
+        'social security number',
+        'online banking',
+        'limited time offer',
+        'win',
+        'prize',
+        'lottery',
+        'free',
+        'temporary',
+        'expire',
+        'suspend',
+        'unauthorized',
+        'reset',
+        'banned',
+        'immediately',
+        'urgent',
+        'important',
+        'discount',
+        'upgrade',
+        'renew',
+        'bonus',
+        'account activity',
+        'account suspension',
+        'update your information',
+        'click here',
+        'open this',
+        'verify your account',
+        'change password',
+        'unusual activity',
+        'confirm your identity',
+        'call this number',
+        'click this link',
+        'You have won',
+        'banking information',
+        'security breach',
+      ];
 
       // Check if any phishing word is present in the SMS body
       const foundPhishingWords = phishingWordsList.filter(word =>
-        smsBody.toLowerCase().includes(word.toLowerCase())
+        smsBody.toLowerCase().includes(word.toLowerCase()),
       );
 
       if (foundPhishingWords.length > 0) {
@@ -72,7 +122,7 @@ const HomeScreen = () => {
           channelId: 'phishing-alert-channel',
           title: 'Phishing SMS Detected',
           message: 'Be cautious of this SMS!',
-          userInfo: { message: smsBody }, // Pass additional data with the notification
+          userInfo: {message: smsBody}, // Pass additional data with the notification
         });
       }
     };
@@ -99,7 +149,7 @@ const HomeScreen = () => {
         };
 
         PushNotification.createChannel(channelConfig, created =>
-          console.log(`Notification channel created: ${created}`)
+          console.log(`Notification channel created: ${created}`),
         );
       }
     };
@@ -149,7 +199,7 @@ const HomeScreen = () => {
           onPress: () => console.log('User acknowledged the warning'),
         },
       ],
-      { cancelable: false }
+      {cancelable: false},
     );
   };
 
@@ -161,19 +211,51 @@ const HomeScreen = () => {
   }, [phishingSMS, alertDisplayed]);
 
   return (
-    <View style={[styles.container, { backgroundColor: isDarkMode ? '#000000' : '#F5F5F5' }]}>
-      <View style={[styles.rectangle, { backgroundColor: isDarkMode ? '#333333' : '#FFFFFF' }]}>
-        <Text style={[styles.subtitle, { color: isDarkMode ? '#FFFFFF' : '#282828' }]}>Message:</Text>
-        <Text style={[styles.message, { color: isDarkMode ? '#FFFFFF' : '#282828' }]}>
-          {receivedMessage ? receivedMessage : 'No message received yet. Waiting for message...'}
+    <View
+      style={[
+        styles.container,
+        {backgroundColor: isDarkMode ? '#000000' : '#F5F5F5'},
+      ]}>
+      <View
+        style={[
+          styles.rectangle,
+          {backgroundColor: isDarkMode ? '#333333' : '#FFFFFF'},
+        ]}>
+        <Text
+          style={[
+            styles.subtitle,
+            {color: isDarkMode ? '#FFFFFF' : '#282828'},
+          ]}>
+          Message:
+        </Text>
+        <Text
+          style={[styles.message, {color: isDarkMode ? '#FFFFFF' : '#282828'}]}>
+          {receivedMessage
+            ? receivedMessage
+            : 'No message received yet. Waiting for message...'}
         </Text>
       </View>
 
       {phishingSMS !== '' && (
-        <View style={[styles.rectangle, { backgroundColor: isDarkMode ? '#333333' : '#FFFFFF' }]}>
-          <Text style={[styles.subtitle, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>Phishing words detected:</Text>
+        <View
+          style={[
+            styles.rectangle,
+            {backgroundColor: isDarkMode ? '#333333' : '#FFFFFF'},
+          ]}>
+          <Text
+            style={[
+              styles.subtitle,
+              {color: isDarkMode ? '#FFFFFF' : '#000000'},
+            ]}>
+            Phishing words detected:
+          </Text>
           {phishingWords.map((word, index) => (
-            <Text key={index} style={[styles.phishingWord, { backgroundColor: isDarkMode ? '#555555' : '#FFD2D2' }]}>
+            <Text
+              key={index}
+              style={[
+                styles.phishingWord,
+                {backgroundColor: isDarkMode ? '#555555' : '#FFD2D2'},
+              ]}>
               {word}
             </Text>
           ))}
@@ -188,6 +270,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
+    margin: 20
   },
   rectangle: {
     width: '100%',
