@@ -7,7 +7,9 @@ import {
   KeyboardAvoidingView,
   Alert,
 } from 'react-native';
+import axios from 'axios';
 
+import {BASE_API_ROUTE, REGISTER_API_ROUTE} from '../Route';
 import TitleText from '../components/TitleText';
 import Label from '../components/Label';
 import TextBox from '../components/TextBox';
@@ -93,11 +95,21 @@ const Signup = ({navigation}) => {
         name,
         email,
         password,
+        c_password: password,
         gender: userGender,
         education,
         age,
       };
       console.log(data);
+
+      axios
+        .post(`${BASE_API_ROUTE}${REGISTER_API_ROUTE}`, data)
+        .then(function (response) {
+          Alert.alert('Registration successful!');
+        })
+        .catch(function (error) {
+          console.log('Error: ',error);
+        });
     }
   };
 
