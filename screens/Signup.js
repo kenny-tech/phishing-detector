@@ -102,14 +102,14 @@ const Signup = ({navigation}) => {
       };
       console.log(data);
 
-      axios
-        .post(`${BASE_API_ROUTE}${REGISTER_API_ROUTE}`, data)
-        .then(function (response) {
-          Alert.alert('Registration successful!');
-        })
-        .catch(function (error) {
-          console.log('Error: ',error);
-        });
+      // axios
+      //   .post(`${BASE_API_ROUTE}${REGISTER_API_ROUTE}`, data)
+      //   .then(function (response) {
+      //     Alert.alert('Registration successful!');
+      //   })
+      //   .catch(function (error) {
+      //     console.log('Error: ',error);
+      //   });
     }
   };
 
